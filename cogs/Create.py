@@ -21,7 +21,7 @@ class Create(commands.Cog):
             value = response.json()['data']['value']
         else:
             ctx.send('Произошла ошибка при запросе к API')
-        await ctx.guild.create_voice_channel(f'BEAR token: ${round(value, 9)}')
+        await ctx.guild.create_voice_channel(f'BEAR token: ${round(value, 3)}')
 
 
 async def setup(client):
