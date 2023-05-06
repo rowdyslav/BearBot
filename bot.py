@@ -1,5 +1,6 @@
 import os
 import asyncio
+from webserver import keep_alive
 import discord
 from discord.ext import commands
 
@@ -19,6 +20,7 @@ async def load():
 async def main():
     async with client:
         await load()
+        keep_alive()
         await client.start(token)
 
 
