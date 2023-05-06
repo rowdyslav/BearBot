@@ -17,8 +17,10 @@ class Create(commands.Cog):
     @commands.command()
     async def create(self, ctx):
         response = requests.get(self.api)
+        print('create сработал!', end=' ')
         if response.status_code == 200:
             value = response.json()['data']['value']
+            print('value получено!')
         else:
             ctx.send('Произошла ошибка при запросе к API')
         await ctx.guild.create_voice_channel(f'BEAR token: ${str(value)[:5]}')
