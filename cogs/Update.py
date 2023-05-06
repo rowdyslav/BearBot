@@ -1,5 +1,4 @@
 import requests
-import asyncio
 from discord.ext import commands, tasks
 # import discord
 
@@ -37,7 +36,6 @@ class Update(commands.Cog):
             print(f'Название канала {channel.name}, сервер {channel.guild}')
             await channel.edit(name=f'BEAR token: ${str(value)[:5]}')
             print(f'Канал на сервере {channel.guild} обновлен!')
-        await asyncio.sleep(3)
 
     @update_channels.before_loop
     async def before_update_channels(self):
