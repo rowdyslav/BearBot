@@ -3,7 +3,7 @@ from discord.ext import commands, tasks
 # import discord
 
 
-class Update(commands.Cog):
+class Beartoken(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.api = 'https://public-api.birdeye.so/public/price?address\
@@ -44,4 +44,4 @@ class Update(commands.Cog):
 
 
 async def setup(client):
-    await client.add_cog(Update(client))
+    await client.add_cog(Beartoken(client))
