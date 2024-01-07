@@ -1,6 +1,6 @@
 import requests
 from discord.ext import commands, tasks
-# import discord
+from icecream import ic
 
 
 def json_find(verst, key, value):
@@ -9,19 +9,15 @@ def json_find(verst, key, value):
             return dict_index
 
 
-class Farmingpool(commands.Cog):
+class Farmingpoolsecond(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.apis = ['https://api.raydium.io/v2/main/pairs',
                      'https://api.raydium.io/v2/main/farm/info']
         self.update_channels.start()
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print('update работает!')
-
     def cog_unload(self):
-        self.update_channels.cancel()  # отменяем задачу при выгрузке Cog
+        self.update_channels.cancel()
 
     @tasks.loop(minutes=60)
     async def update_channels(self):
@@ -30,32 +26,30 @@ class Farmingpool(commands.Cog):
                           for channel in guild.voice_channels
                           if channel.name.startswith('Farming APR')]
         first_r = requests.get(self.apis[0])
-        first_r = requests.get(self.apis[0])
         if first_r.status_code == 200:
-            first = first_r.json()[json_find(first_r.json(), "ammId", "GvRj43J4Mk93rmS8VFPVHEHDafrUwmbH625RgpPafZjQ")]['apr24h']
-            print(first)
+            first = first_r.json()[json_find(first_r.json(), "ammId", "6wnz14fhCZzMsBVG7ooB5eP3aPNkhEMrJ5FrqRFt8xF4")][
+                'apr24h']
         else:
-            print('Произошла ошибка при запросе к API')
+            ic('Произошла ошибка при запросе к API')
             return
         second_r = requests.get(self.apis[1])
         if second_r.status_code == 200:
-            second = float(second_r.json()['data'][json_find(second_r.json()["data"], "id", "HP7Pg9MJ6HhRWJRPryxCZ1ziXr7H8qFWBQrcuLQUrLp3")]['apr'][:-1])
-            print(second)
+            second = float(second_r.json()['data'][json_find(second_r.json()["data"], "id",
+                                                             "Bq6QumT1mVBn2b1DCxNDRfZ171J7mX8rH5aYTyRYLddY")]['apr'][
+                           :-1])
         else:
-            print('Произошла ошибка при запросе к API')
+            ic('Произошла ошибка при запросе к API')
             return
         for channel in voice_channels:
-            print(f'Название канала {channel.name}, сервер {channel.guild}')
             await channel.edit(
                 name=f'Farming APR: {str(round(first + second, 1))}%'
-                )
-            print(f'Канал на сервере {channel.guild} обновлен!')
+            )
+            ic(f'Канал на сервере {channel.guild} обновлен!')
 
     @update_channels.before_loop
     async def before_update_channels(self):
-        print('Ожидание запуска задачи...')
         await self.client.wait_until_ready()
 
 
 async def setup(client):
-    await client.add_cog(Farmingpool(client))
+    await client.add_cog(Farmingpoolsecond(client))
