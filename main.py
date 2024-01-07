@@ -32,4 +32,3 @@ async def on_ready():
 asyncio.run(main())
 
 # https://discord.com/api/oauth2/authorize?client_id=1104397332151279689&permissions=8&scope=bot
-# MTEwNDM5NzMzMjE1MTI3OTY4OQ.GEVl87.L3dMNA_86P9wbnuRxSoi9sS1xx57FIBQt3rZFY
